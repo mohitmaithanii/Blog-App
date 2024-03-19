@@ -6,22 +6,27 @@ export class AuthService {
 	account;
 
 	constructor() {
+		// set the endpoint and project ID for the client
 		this.client
 			.setEndpoint(config.appwriteUrl)
 			.setProject(config.appwriteProjectId);
+
+		// create a new Appwrite account instance using the client
 		this.account = new Account(this.client);
 	}
 
+	// Create new account
 	async createAccount({ email, password, name }) {
 		try {
 			const userAccount = await this.account.create(
-				ID.unique(),
+				ID.unique(), // generate a unique ID for the user
 				email,
 				password,
 				name
 			);
+
 			if (userAccount) {
-				// call another method
+				// if the user account was created successfully
 				return this.login({ email, password });
 			} else {
 				return userAccount;
@@ -31,6 +36,7 @@ export class AuthService {
 		}
 	}
 
+	// Login account
 	async login({ email, password }) {
 		try {
 			return await this.account.createEmailSession(email, password);
@@ -39,6 +45,7 @@ export class AuthService {
 		}
 	}
 
+	// Get current user
 	async getCurrentUser() {
 		try {
 			return await this.account.get();
@@ -49,6 +56,7 @@ export class AuthService {
 		return null;
 	}
 
+	// Logout
 	async logout() {
 		try {
 			await this.account.deleteSessions();
