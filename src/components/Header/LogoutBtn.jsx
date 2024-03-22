@@ -4,7 +4,10 @@ import { logout } from "../../store/authSlice";
 
 function LogoutBtn() {
 	const dispatch = useDispatch();
+
+	// Define a function called logoutHandler that will be called when the Logout button is clicked
 	const logoutHandler = () => {
+		// Call the logout function from the authService to log out the user
 		authService.logout().then(() => {
 			dispatch(logout());
 		});
